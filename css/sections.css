@@ -1,17 +1,20 @@
 /* ---------- reviews ---------- */
-.reviews { padding: 90px 0; content-visibility: auto; contain-intrinsic-size: auto 760px; }
+.reviews { padding: 90px 0; }
 .rev-top { display: grid; gap: 20px; margin-bottom: 20px; }
 .rev-score { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; } .rev-score b { font: 500 64px/1 var(--serif); color: var(--btn-2); margin-right: 10px; }
 .stars { color: var(--btn); letter-spacing: 3px; font-size: 16px; }
 .rev-bars div { display: grid; grid-template-columns: 18px 1fr 28px; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); }
 .rev-bars em { height: 3px; background: var(--line); position: relative; overflow: hidden; } .rev-bars em i { position: absolute; inset: 0; background: var(--btn); transform-origin: 0 50%; }
-.rev-ctrl { display: none; justify-content: flex-end; }
-.rev-track { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; } .rev-track::-webkit-scrollbar { display: none; }
-.rev { flex: 0 0 82%; scroll-snap-align: start; border: 1px solid rgba(255, 255, 255, .1); border-radius: 14px; background: linear-gradient(160deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .015)); padding: 24px; }
+.rev-marq { overflow: hidden; margin-inline: calc(50% - 50vw); padding: 4px 0; }
+.rev-track { display: flex; width: max-content; animation: marq 54s linear infinite; will-change: transform; }
+.rev-marq:hover .rev-track, .rev-marq.hold .rev-track, .rev-marq:focus-within .rev-track { animation-play-state: paused; }
+@keyframes marq { to { transform: translate3d(-50%, 0, 0); } }
+.rev { flex: none; width: min(78vw, 340px); margin-right: 14px; border: 1px solid rgba(255, 255, 255, .1); border-radius: 14px; background: linear-gradient(160deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .015)); padding: 24px; }
 .rev p { margin: 12px 0 18px; font-family: var(--serif); font-size: 20px; line-height: 1.4; }
 .who { display: flex; align-items: center; gap: 12px; font-size: 13px; } .who small { display: block; color: var(--muted); }
 .av { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font: 500 13px var(--sans); background: rgba(200, 169, 106, .14); color: var(--btn); }
-@media (min-width: 900px) { .rev { flex-basis: calc(33.333% - 8px); } .rev-top { grid-template-columns: 1fr 1fr; align-items: center; } .rev-ctrl { display: flex; } }
+@media (min-width: 900px) { .rev-top { grid-template-columns: 1fr 1fr; align-items: center; } }
+@media (prefers-reduced-motion: reduce) { .rev-marq { overflow-x: auto; } .rev-track { animation: none; } .rev[aria-hidden] { display: none; } }
 
 /* ---------- store (+ ambient boutique video) ---------- */
 .store { position: relative; overflow: hidden; padding: 90px 0; content-visibility: auto; contain-intrinsic-size: auto 820px; }

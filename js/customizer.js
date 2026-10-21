@@ -2,12 +2,12 @@
    - Router: opening a watch pushes the route (so the back button works); a direct link / refresh works too.
    - Shared-element transition: the card's photo flies (transform only, ~440ms) into the large preview
      while the panel enters with a per-card style (left / right / up / down / scale).
-   - Preview: real photo + canvas recolour (dial and bezel/case independently) + code-drawn straps. */
+   - Preview: a straight, still photo + canvas recolour (dial and bezel/case independently) + code-drawn straps. */
 (function () {
   var U = window.UI, S = window.SITE, $ = U.$, I = S.img;
   var view = $("#cview"), stage = $("#cvStage"), inner = $("#cvInner"), photo = $("#cvPhoto"), shd = $("#cvShadow"), strapEl = $("#cvStrap"), cvs = $("#cvCanvas");
   var VARIANTS = ["left", "right", "up", "scale", "right", "left", "down", "scale", "up", "left"];
-  var st = { w: null, dial: 0, frame: 0, strap: "photo", sc: 0 }, eng = null, ready = false, rig = null, token = 0, openFrom = null, pushed = false, lastFocus = null, scrollY0 = 0, flyer = null;
+  var st = { w: null, dial: 0, frame: 0, strap: "photo", sc: 0 }, eng = null, ready = false, token = 0, openFrom = null, pushed = false, lastFocus = null, scrollY0 = 0, flyer = null;
 
   function shade(h, f) { return "#" + (function (c) { return c.map(function (v) { v = f >= 0 ? v + (255 - v) * f : v * (1 + f); return ("0" + Math.round(v).toString(16)).slice(-2); }).join(""); })([1, 3, 5].map(function (i) { return parseInt(h.substr(i, 2), 16); })); }
 
@@ -117,19 +117,17 @@
   });
   addEventListener("resize", function () { if (view.classList.contains("open")) layout(); });
 
-  function sheetTilt() { if (rig && matchMedia("(pointer: coarse)").matches) rig.setOffset(0, Math.min(1, view.scrollTop / 320) * 0.9); }
-
   /* ---------------- open / close with the shared-element flight ---------------- */
   function fly(from) {
     var pic = from.card.querySelector(".pic"), img = from.card.querySelector(".pic img");
     var a = pic.getBoundingClientRect(), t = inner.getBoundingClientRect();
-    if (!a.width || !t.width) { inner.style.opacity = 1; rig.setPose(st.w.pose); return; }
+    if (!a.width || !t.width) { inner.style.opacity = 1; return; }
     flyer = document.createElement("img"); flyer.className = "flyer"; flyer.alt = ""; flyer.src = img.currentSrc || img.src;
     flyer.style.cssText = "left:" + t.left + "px;top:" + t.top + "px;width:" + t.width + "px;height:" + t.height + "px";
     document.body.appendChild(flyer); inner.style.opacity = 0;
     var s0 = a.width * 0.96 / t.width, dx = (a.left + a.width / 2) - (t.left + t.width / 2), dy = (a.top + a.height / 2) - (t.top + t.height / 2);
-    var an = flyer.animate([{ transform: "translate3d(" + dx + "px," + dy + "px,0) rotate(-8deg) scale(" + s0 + ")" }, { transform: "translate3d(0,0,0) rotate(0deg) scale(1)" }], { duration: 440, easing: "cubic-bezier(.2,.7,.2,1)", fill: "both" });
-    an.onfinish = an.oncancel = function () { inner.style.opacity = 1; if (flyer) { flyer.remove(); flyer = null; } rig.setPose(st.w.pose); };      // settle into the 3D pose
+    var an = flyer.animate([{ transform: "translate3d(" + dx + "px," + dy + "px,0) scale(" + s0 + ")" }, { transform: "translate3d(0,0,0) scale(1)" }], { duration: 440, easing: "cubic-bezier(.2,.7,.2,1)", fill: "both" });
+    an.onfinish = an.oncancel = function () { inner.style.opacity = 1; if (flyer) { flyer.remove(); flyer = null; } };
   }
   function openView(id, from) {
     lastFocus = document.activeElement; scrollY0 = scrollY;
@@ -137,13 +135,11 @@
     view.classList.add("v-" + VARIANTS[((from && from.index) || 0) % VARIANTS.length]);
     view.scrollTop = 0; view.setAttribute("aria-hidden", "false"); document.documentElement.classList.add("lock");
     inner.style.opacity = from && from.card ? 0 : 1;
-    if (!rig) { rig = new Tilt.Rig(inner, { rangeX: 4, rangeY: 6 }); rig.follow(stage); view.addEventListener("scroll", sheetTilt, { passive: true }); }
-    rig.setPose({ rx: 0, ry: 0, rz: 0 }, true);
     var p = load(id);
     view.classList.remove("open"); void view.offsetWidth; view.classList.add("fading", "open");
     layout();
-    if (from && from.card && !Tilt.reduce) { Promise.race([Preload.load(photo.src), new Promise(function (r) { setTimeout(r, 140); })]).then(function () { layout(); fly(from); }); }
-    else { inner.style.opacity = 1; rig.setPose(st.w.pose); }
+    if (from && from.card && !(window.Tilt && Tilt.reduce) && !matchMedia("(prefers-reduced-motion: reduce)").matches) { Promise.race([Preload.load(photo.src), new Promise(function (r) { setTimeout(r, 140); })]).then(function () { layout(); fly(from); }); }
+    else { inner.style.opacity = 1; }
     $("#cvBack").focus({ preventScroll: true }); return p;
   }
   function closeView() {
@@ -163,7 +159,7 @@
       var id = m[1] || (window.Hero ? Hero.current() : S.watches[0].id);
       if (!U.byId(id)) { history.replaceState(null, "", "#collection"); if (open) closeView(); return; }
       if (!m[1]) history.replaceState(null, "", "#/customize/" + id);
-      if (!open) { openView(id, openFrom); openFrom = null; } else if (st.w.id !== id) { load(id); rig.setPose(U.byId(id).pose); view.scrollTop = 0; }
+      if (!open) { openView(id, openFrom); openFrom = null; } else if (st.w.id !== id) { load(id); view.scrollTop = 0; }
     } else if (open) closeView();
   }
   addEventListener("hashchange", route);

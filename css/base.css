@@ -21,7 +21,7 @@
   --gutter: 20px; --hdr: 64px; --ease: cubic-bezier(.2, .7, .2, 1);
 }
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; }
 html.lock, html.lock body, html.lock2, html.lock2 body { overflow: hidden; }
 body { margin: 0; background-color: var(--bg-1); color: var(--ink); font: 300 15px/1.6 var(--sans); overflow-x: hidden; -webkit-font-smoothing: antialiased; transition: background-color .6s ease; }
 img, svg, canvas, video { display: block; max-width: 100%; }
@@ -101,6 +101,6 @@ section { scroll-margin-top: var(--hdr); }
 /* ---------- shared fade-in ---------- */
 .reveal { opacity: 0; transition: opacity .7s ease; } .reveal.in { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; } .reveal { opacity: 1; }
+  .reveal { opacity: 1; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
 }

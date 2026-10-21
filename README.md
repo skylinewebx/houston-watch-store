@@ -15,7 +15,7 @@
 ## Images
 - Originals live in `Watch Store Assets/collection/*.jpg` (never upscaled). `tools/build_assets/` (Python: opencv-python-headless, scipy, pillow>=11 with AVIF) cuts them out
   (GrabCut -> guided-filter edges, <=1px feather, halo removal), adds a studio rim light + baked soft contact shadow (opposite the light), sharpens lightly, and writes
-  `assets/watches/<id>-<width>.avif|webp` ladders (240...native) + `<id>-shadow.webp`.  Anatomy layers: `tools/build_assets/layers2.py`.
+  `assets/watches/<id>-<width>.avif|webp` ladders (240...native) + `<id>-shadow.webp`.
 - Source resolution: 9 photos are 1792x2400; **the Cognac Chronograph source (`Gold_chronograph_wristwatch_on_d…20261020202957.jpg`) is only 896x1200** and is served at its native 896px (no upscaling).
   Replace it with a >=1792x2400 render for the same sharpness as the rest.
 

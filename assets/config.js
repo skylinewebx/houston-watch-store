@@ -14,30 +14,16 @@ window.SITE = {
   img: { base: "assets/watches/", w: 1200, h: 1607 },   /* per-watch srcset widths + AVIF/WebP come from watches/meta.js */
   video: { src: "assets/video/boutique.mp4", poster: "assets/video/boutique-poster.webp" },
 
-  /* ---- ANATOMY (interactive exploded view) ------------------------------
-     Five parts sliced from the Opus Diver photo; every layer shares one canvas.
-     bbox = visible area of the part (fractions of the canvas), used for the hotspot.
-     at   = scroll-progress window in which the part separates.
-     rz / z = slight tilt (deg) and depth (px) in the exploded state, s = scale.
-     layout = where each part's centre ends up, as a fraction of the scene (w,h).  */
+  /* ---- ANATOMY (one still composition: the Opus Diver, straight, four labelled parts) ----
+     at = anchor on the photo (fractions of the 1200x1607 canvas around the case: dx/dy in case radii from the dial centre, or "crown"). */
   anatomy: {
-    descent: [0, 0.18], hotAt: 0.66,
+    watch: "dive",
     parts: [
-      { id: "strap-top", src: "assets/layers/layer-strap-top.webp", bbox: [0.3625, 0.0205, 0.6325, 0.3273], at: [0.20, 0.40], rz: 7, z: -40, s: 1,
-        title: "Strap · upper", material: "Italian calf leather", finish: "Hand-stitched, edge-painted", detail: "22 mm with quick-release spring bars" },
-      { id: "strap-bottom", src: "assets/layers/layer-strap-bottom.webp", bbox: [0.3625, 0.6708, 0.6325, 0.9788], at: [0.24, 0.44], rz: -5, z: -20, s: 1,
-        title: "Strap · tail", material: "Italian calf leather", finish: "Pebbled grain, steel keeper", detail: "Seven-hole adjustment, 80 mm" },
-      { id: "crown", src: "assets/layers/layer-crown.webp", bbox: [0.74, 0.448, 0.8083, 0.5501], at: [0.30, 0.50], rz: -10, z: 30, s: 1.9,
-        title: "Crown", material: "316L steel, screw-down", finish: "Knurled grip, laser-signed", detail: "Triple-gasket seal for 300 m" },
-      { id: "frame", src: "assets/layers/layer-frame.webp", bbox: [0.2442, 0.2707, 0.7917, 0.7393], at: [0.36, 0.58], rz: -6, z: -10, s: 1.04,
-        title: "Bezel & case", material: "316L stainless steel", finish: "Brushed flanks, polished chamfers", detail: "Blue ceramic insert, 41 mm" },
-      { id: "dial", src: "assets/layers/layer-dial.webp", bbox: [0.2933, 0.3466, 0.7017, 0.6515], at: [0.44, 0.60], rz: -2, z: 90, s: 1.08,
-        title: "Dial", material: "Sunburst navy lacquer", finish: "Lume indices, applied markers", detail: "Domed sapphire, anti-reflective" }
-    ],
-    layout: {
-      desktop: { dial: [0.5, 0.5], frame: [0.2, 0.3], crown: [0.9, 0.5], "strap-top": [0.7, 0.2], "strap-bottom": [0.74, 0.82] },
-      mobile: { dial: [0.45, 0.52], frame: [0.25, 0.22], crown: [0.88, 0.5], "strap-top": [0.74, 0.2], "strap-bottom": [0.72, 0.82] }
-    }
+      { id: "strap", title: "Strap", lines: ["Black Italian calf leather", "Hand-stitched, navy thread"], at: [-0.2, -1.5], side: "l" },
+      { id: "dial", title: "Dial", lines: ["Sunburst navy lacquer finish", "Domed sapphire glass", "Applied lume markers"], at: [0.4, -0.35], side: "r" },
+      { id: "frame", title: "Frame & case", lines: ["316L stainless steel", "Brushed flanks, polished chamfer", "300 m water resistance"], at: [-0.72, 0.72], side: "l" },
+      { id: "crown", title: "Crown", lines: ["316L steel, signed", "Screw-down, triple gasket"], at: "crown", side: "r" }
+    ]
   },
 
   /* ---- WATCHES (10) -----------------------------------------------------

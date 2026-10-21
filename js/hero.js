@@ -1,4 +1,4 @@
-/* Hero + showcase: 5 watches, each shown with its own 3D pose, crossfade + light sweep, page-wide ambient colour,
+/* Hero + showcase: 5 watches, each shown straight and solid (contact + ambient shadow, rim light), crossfade + slow light sweep, page-wide ambient colour,
    buttons tinted by the watch, staged detail callouts. The big images are AVIF/WebP <picture>s that were decoded
    ahead of time (preload.js), so a switch is instant. */
 (function () {
@@ -8,7 +8,7 @@
 
   U.$("#heroTitle").innerHTML = "Time, <em>considered.</em>"; U.$("#heroSub").textContent = S.sub;
 
-  // .pic (masked window) > .float (idle drift) > .wimg > .tilt (3D pose rig) > [.w = shadow + photo] x5 + sheen
+  // .pic (masked window) > .float > .wimg > .tilt (slow 2deg turn)  > [.w = shadow + photo] x5 + sheen
   var hs = Preload.heroSizes();
   var tiltEl0 = U.$(".tilt", stage), sheen0 = U.$(".sheen", stage);               // watch #1 is static HTML (instant LCP); build the other four
   var ws = U.$$(".tilt .w", stage), built = false;
@@ -24,12 +24,12 @@
   thumbs.innerHTML = list.map(function (w, i) {
     return '<button class="thumb" role="tab" aria-selected="false" aria-label="' + U.esc(w.name) + '" data-i="' + i + '">' + U.im(w.id, "", { sizes: Preload.thumbSizes }) + "</button>";
   }).join("");
-  var tabs = U.$$(".thumb", thumbs), cos = U.$(".cos", stage), sheen = sheen0, tiltEl = tiltEl0;
-  var rig = new Tilt.Rig(tiltEl, { rangeX: 5, rangeY: 8 }); rig.follow(home); rig.follow(stage);
+  var tabs = U.$$(".thumb", thumbs), cos = U.$(".cos", stage), sheen = sheen0, reduce = matchMedia("(prefers-reduced-motion: reduce)").matches, FLAT = { rx: 0, ry: 0, rz: 0 };
 
   /** Light sweep across the watch silhouette (mask = the current photo). */
-  function sweep(w) {
-    var now = Date.now(); if (now - swept < 1100 || Tilt.reduce) return; swept = now;
+  function sweep(w, ms) {
+    var now = Date.now(); if (now - swept < 1100 || reduce) return; swept = now;
+    sheen.style.setProperty("--sd", (ms || 950) + "ms");
     sheen.style.setProperty("--m", "url(" + new URL(Preload.url(w.id, Preload.pick(w.id, 720)), document.baseURI).href + ")");   // absolute: var() URLs resolve against the stylesheet
     sheen.classList.remove("go"); void sheen.offsetWidth; sheen.classList.add("go");
   }
@@ -44,7 +44,7 @@
   function build(w, show) {
     G = U.stageGeom(stage); var ox = (G.w - 1200) / 2, s = w.show, sc = stage.clientWidth / G.w || 0.4;
     var r = w.r, rd = w.dialR, sh = w.strapHalf, cx = w.cx, cy = w.cy, rm = (r + rd) / 2;
-    var P = function (x, y) { var q = project(w.pose, x, y, sc); return { x: ox + q.x, y: q.y - G.y0 }; };
+    var P = function (x, y) { var q = project(FLAT, x, y, sc); return { x: ox + q.x, y: q.y - G.y0 }; };
     var lim = function (p) { p.y = Math.min(G.h - 60, Math.max(60, p.y)); return p; };
     var rows = [
       ["Strap", s.strap, P(cx - sh * 0.5, cy - 1.62 * r), P(cx - sh - 26, cy - 1.62 * r), "l"],
@@ -60,7 +60,6 @@
     var w = list[i]; idx = i;
     ws.forEach(function (el, n) { el.classList.toggle("on", n === i); });
     tabs.forEach(function (el, n) { el.setAttribute("aria-selected", n === i); });
-    rig.setPose(w.pose, instant);                                                  // each watch faces its own direction
     root.style.setProperty("--bg-1", w.show.bg1); root.style.setProperty("--bg-2", w.show.bg2); root.style.setProperty("--glow", w.show.glow);
     U.accent(w.show.glow); U.$("#themeColor").content = w.show.bg1;
     U.$("#scNum").textContent = "0" + (i + 1); U.$("#scName").textContent = w.name; U.$("#scPrice").textContent = U.money(w.price); U.$("#scType").textContent = w.type;
@@ -82,27 +81,18 @@
   stage.addEventListener("pointerdown", function (e) { x0 = e.clientX; }, { passive: true });
   stage.addEventListener("pointerup", function (e) { if (x0 !== null && Math.abs(e.clientX - x0) > 70) show(idx + (e.clientX < x0 ? 1 : -1)); x0 = null; }, { passive: true });
   stage.addEventListener("pointercancel", function () { x0 = null; }, { passive: true });
-  stage.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse" && idx > -1) sweep(list[idx]); }, { passive: true });
   U.$("#scAdd").onclick = function () { var w = list[idx]; U.addToCart({ id: w.id, name: w.name, price: w.price }); };
   U.$("#scCustomize").onclick = function () { window.Router.go(list[idx].id); };
   (bp.addEventListener ? bp.addEventListener.bind(bp, "change") : bp.addListener.bind(bp))(function () { if (idx > -1) build(list[idx], true); });
 
-  /* optional gyroscope tilt (phones): explicit opt-in, remembered */
-  var mb = U.$("#motionBtn");
-  if (mb && Tilt.motion.supported && !Tilt.reduce) {
-    mb.hidden = false;
-    var set = function (on) { mb.setAttribute("aria-pressed", on); mb.querySelector("span").textContent = on ? "Motion on" : "Tilt with motion"; };
-    mb.addEventListener("click", function () { if (Tilt.motion.on) { Tilt.motion.disable(); set(false); } else Tilt.motion.enable().then(function (ok) { set(ok); if (!ok) U.toast("Motion access was not granted"); }); });
-    try { if (localStorage.getItem("mw-motion") && typeof DeviceOrientationEvent.requestPermission !== "function") Tilt.motion.enable().then(set); } catch (e) {}
-  }
-
-  /* idle float (2-3px, 7s): switched on only if the device holds ~60fps with it running; otherwise it stays off for good (adaptive, no jank on weak GPUs) */
-  if (!Tilt.reduce) {
+  /* ambient life: a slow specular sweep every ~9s and a barely-there 2deg turn (the shadow and highlight move against it). Only on devices that hold ~60fps with it running. */
+  if (!reduce) {
+    var sweepTimer = setInterval(function () { if (!document.hidden && idx > -1 && scrollY < innerHeight) sweep(list[idx], 1800); }, 9000);
     var probeStart = function () {
-      home.classList.add("float-on"); var d = [], last = performance.now(), n = 0;
+      home.classList.add("turn-on"); var d = [], last = performance.now(), n = 0;
       requestAnimationFrame(function f(t) { d.push(t - last); last = t; if (++n < 45) return requestAnimationFrame(f);
         d = d.slice(4).sort(function (a, b) { return a - b; }); var avg = d.reduce(function (a, b) { return a + b; }, 0) / d.length, p90 = d[Math.floor(d.length * 0.9)];
-        if (avg > 19.5 || p90 > 26) home.classList.remove("float-on"); });
+        if (avg > 19.5 || p90 > 26) home.classList.remove("turn-on"); });
     };
     setTimeout(function () { (window.requestIdleCallback || setTimeout)(probeStart); }, 3000);
   }

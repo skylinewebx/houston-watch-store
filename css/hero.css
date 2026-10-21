@@ -26,24 +26,26 @@
 .hero-stage { position: relative; width: 100%; margin: 0; }
 .halo { position: absolute; left: 50%; top: 46%; width: 100%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background-color: var(--glow); opacity: .34; transition: background-color .6s ease;
   -webkit-mask-image: radial-gradient(closest-side, #000, transparent 92%); mask-image: radial-gradient(closest-side, #000, transparent 92%); pointer-events: none; }
-.floor { position: absolute; left: 10%; right: 10%; bottom: 1%; height: 8%; pointer-events: none;
-  background: radial-gradient(closest-side, rgba(0, 0, 0, .75), transparent); }
-.floor::after { content: ""; position: absolute; left: 8%; right: 8%; top: 20%; bottom: 20%; border-radius: 50%; background-color: var(--glow); opacity: .5; transition: background-color .6s ease;
+/* polished surface: soft contact pool, a faint mirrored glow and a rim-light halo behind the case */
+.floor { position: absolute; left: 14%; right: 14%; bottom: 2%; height: 7%; pointer-events: none; background: radial-gradient(closest-side, rgba(0, 0, 0, .8), transparent); }
+.floor::after { content: ""; position: absolute; left: 6%; right: 6%; top: 105%; height: 120%; border-radius: 50%; background-color: var(--glow); opacity: .22; transition: background-color .6s ease;
   -webkit-mask-image: radial-gradient(closest-side, #000, transparent); mask-image: radial-gradient(closest-side, #000, transparent); }
+.hero-stage::before { content: ""; position: absolute; left: 50%; top: 40%; width: 62%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, .09), transparent); pointer-events: none; }
 .hero .stage { position: relative; z-index: 1; }
 .float { position: absolute; inset: 0; }
-.hero.float-on .float { animation: float 7s ease-in-out infinite; will-change: transform; }   /* idle drift: enabled only after a frame-rate probe says the device can afford it (see hero.js) */
-@keyframes float { 50% { transform: translate3d(0, -3px, 0); } }
-.tilt { position: absolute; inset: 0; transform: perspective(1100px) rotateZ(-9deg); will-change: transform; backface-visibility: hidden; }
+.tilt, .tilt .w { transform-style: flat; }
+/* a barely-there 2deg turn (one element, transform only): the baked shadow slides the other way, the highlight moves with the light */
+.hero.turn-on .tilt { animation: turn 11s ease-in-out infinite; will-change: transform; }
+.hero.turn-on .shd { animation: turnshd 11s ease-in-out infinite; }
+@keyframes turn { 0%, 100% { transform: perspective(1400px) rotateY(-1.6deg); } 50% { transform: perspective(1400px) rotateY(1.6deg); } }
+@keyframes turnshd { 0%, 100% { transform: translate3d(.7%, 0, 0); } 50% { transform: translate3d(-.7%, 0, 0); } }
+.tilt { position: absolute; inset: 0; backface-visibility: hidden; }
 .tilt .w { position: absolute; inset: 0; opacity: 0; transition: opacity .5s ease; }
 .tilt .w.on { opacity: 1; }
 .hero .shd { opacity: .9; }
-.motion { position: absolute; right: 0; top: 2px; z-index: 4; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: rgba(0, 0, 0, .3); font: 400 10.5px var(--sans); letter-spacing: .16em; text-transform: uppercase; color: rgba(236, 232, 223, .75); }
-.motion[hidden] { display: none; } .motion svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
-.motion[aria-pressed="true"] { border-color: var(--btn); color: var(--btn-2); }
 .sheen { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; -webkit-mask: var(--m) center / 100% 100% no-repeat; mask: var(--m) center / 100% 100% no-repeat; }
-.sheen::before { content: ""; position: absolute; top: -10%; bottom: -10%; left: 0; width: 55%; opacity: 0; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .34), transparent); transform: translateX(-130%) skewX(-12deg); }
-.sheen.go::before { animation: sweep .95s ease-out; }
+.sheen::before { content: ""; position: absolute; top: -10%; bottom: -10%; left: 0; width: 55%; opacity: 0; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .26), transparent); transform: translateX(-130%) skewX(-12deg); }
+.sheen.go::before { animation: sweep var(--sd, .95s) ease-out; }
 @keyframes sweep { 0% { opacity: 1; transform: translateX(-130%) skewX(-12deg); } 100% { opacity: 1; transform: translateX(270%) skewX(-12deg); } }
 
 .hero .co { --p: 0; }
@@ -61,7 +63,7 @@
 .thumbs { display: flex; justify-content: center; align-items: flex-end; gap: 6px; margin: 4px 0 12px; min-height: 84px; }
 .thumb { position: relative; flex: none; width: 56px; height: 76px; border: 1px solid var(--line); border-radius: 8px; background: rgba(255, 255, 255, .02); overflow: hidden; opacity: .5;
   transition: transform .4s var(--ease), opacity .4s ease, border-color .3s, background-color .3s; }
-.thumb img { position: absolute; inset: 2px; width: calc(100% - 4px); height: calc(100% - 4px); object-fit: contain; transform: rotate(-10deg) scale(1.08); }
+.thumb img { position: absolute; inset: 2px; width: calc(100% - 4px); height: calc(100% - 4px); object-fit: contain; transform: scale(1.08); }
 .thumb:hover { opacity: .85; }
 .thumb[aria-selected="true"] { opacity: 1; transform: scale(1.18) translateY(-4px); border-color: color-mix(in srgb, var(--btn) 80%, transparent); background: color-mix(in srgb, var(--btn) 14%, transparent); z-index: 1; }
 .sc-info { text-align: center; }

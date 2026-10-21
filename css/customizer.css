@@ -76,3 +76,7 @@
 /* a closed customizer must be inert: children with their own visibility (canvas/photo) would otherwise still catch clicks and paint */
 .cview:not(.open), .cview:not(.open) * { visibility: hidden !important; pointer-events: none !important; }
 .cview:not(.open) { content-visibility: hidden; }   /* closed = no style/layout/paint cost at all */
+
+/* straight, still preview on a polished surface: soft light behind the case + a faint mirrored pool under it */
+.cv-stage::before { content: ""; position: absolute; left: 50%; top: 46%; width: 70%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, .08), transparent); pointer-events: none; }
+.cv-inner { will-change: auto; }

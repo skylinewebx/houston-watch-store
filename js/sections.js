@@ -10,14 +10,16 @@
     var c = R.filter(function (r) { return r.stars === n; }).length;
     return "<div><span>" + n + '★</span><em><i style="transform:scaleX(' + (c / R.length) + ')"></i></em><span>' + c + "</span></div>";
   }).join("");
-  $("#revTrack").innerHTML = R.map(function (r) {
+  /* one slow, continuous row: the list is rendered twice and the track glides exactly one list-width (pure CSS transform loop) */
+  var card = function (r, hidden) {
     var ini = r.name.split(" ").map(function (s) { return s[0]; }).join("");
-    return '<article class="rev"><div class="stars" aria-label="' + r.stars + ' out of 5">' + star(r.stars) + "</div><p>“" + U.esc(r.text) + "”</p>" +
+    return '<article class="rev"' + (hidden ? ' aria-hidden="true"' : "") + '><div class="stars" aria-label="' + r.stars + ' out of 5">' + star(r.stars) + "</div><p>“" + U.esc(r.text) + "”</p>" +
       '<div class="who"><span class="av" aria-hidden="true">' + U.esc(ini) + "</span><div>" + U.esc(r.name) + "<small>" + U.esc(r.area) + ", TX</small></div></div></article>";
-  }).join("");
-  var track = $("#revTrack");
-  $("#revPrev").onclick = function () { track.scrollBy({ left: -track.clientWidth * 0.5, behavior: "smooth" }); };
-  $("#revNext").onclick = function () { track.scrollBy({ left: track.clientWidth * 0.5, behavior: "smooth" }); };
+  };
+  var track = $("#revTrack"), marq = track.parentNode;
+  track.innerHTML = R.map(function (r) { return card(r, 0); }).join("") + R.map(function (r) { return card(r, 1); }).join("");
+  var hold; marq.addEventListener("touchstart", function () { clearTimeout(hold); marq.classList.add("hold"); }, { passive: true });             // touch pauses it
+  ["touchend", "touchcancel"].forEach(function (t) { marq.addEventListener(t, function () { clearTimeout(hold); hold = setTimeout(function () { marq.classList.remove("hold"); }, 1800); }, { passive: true }); });
 
   /* store */
   var s = S.store;

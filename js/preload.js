@@ -62,7 +62,6 @@
     S.watches.slice(0, 5).forEach(function (w) { warm(w.id, thumbSizes); });
     var q = S.watches.slice(1, 5).map(function (w) { return function () { return warm(w.id, heroSizes()); }; });     // one big decode at a time, never a burst
     if (!saver) S.watches.forEach(function (w) { q.push(function () { return warm(w.id, cardSizes); }); });
-    q.push(function () { return many(S.anatomy.parts.map(function (p) { return p.src; })); });
     (function next() { var f = q.shift(); if (f) f().then(function () { idle(next); }); })();
   }
   // never compete with the LCP image: start 2.5s after the page has loaded and the browser is idle

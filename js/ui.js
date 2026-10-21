@@ -113,6 +113,29 @@
   nav.addEventListener("click", function (e) { if (e.target.tagName === "A") menu(false); });
   document.addEventListener("click", function (e) { if (nav.classList.contains("open") && !e.target.closest("#nav,#burger")) menu(false); });
 
+  /* ---- in-page links: one smooth glide straight to the target. The target is re-measured every frame (lazy sections change height as they render), the glide stops the moment the user scrolls, and nothing is pinned or hijacked. ---- */
+  var glide = 0;
+  function goTo(el, hash) {
+    cancelAnimationFrame(glide);
+    var root = document.documentElement, reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var top = function () { return Math.max(0, Math.round(el.getBoundingClientRect().top + scrollY - (el.id === "home" ? 0 : parseFloat(getComputedStyle(el).scrollMarginTop) || 0))); };
+    var from = scrollY, t0 = performance.now(), dist = Math.abs(top() - from), dur = reduce ? 0 : Math.min(900, 380 + dist * 0.12);
+    if (hash && history.replaceState) history.replaceState(null, "", hash);
+    var stop = function () { cancelAnimationFrame(glide); ["wheel", "touchstart", "keydown", "pointerdown"].forEach(function (t) { removeEventListener(t, stop, true); }); };
+    ["wheel", "touchstart", "keydown", "pointerdown"].forEach(function (t) { addEventListener(t, stop, { capture: true, passive: true }); });
+    (function step(now) {
+      var k = dur ? Math.min(1, (now - t0) / dur) : 1, e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2, to = top();
+      scrollTo(0, Math.round(from + (to - from) * e));
+      if (k < 1) glide = requestAnimationFrame(step); else { scrollTo(0, top()); stop(); }
+    })(t0);
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    var h = a.getAttribute("href"); if (h === "#" || h.indexOf("#/") === 0) return;
+    var el = document.getElementById(h.slice(1)); if (!el) return;
+    e.preventDefault(); if (document.documentElement.classList.contains("lock")) setTimeout(function () { goTo(el, h); }, 30); else goTo(el, h);
+  });
+
   /* ---- brand text + footer ---- */
   $$("[data-brand]").forEach(function (n) { n.textContent = S.brand; });
   $("#yr").textContent = new Date().getFullYear();
