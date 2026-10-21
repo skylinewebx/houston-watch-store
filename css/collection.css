@@ -1,0 +1,29 @@
+/* ---------- collection: dark glass cards that feel alive ---------- */
+.collection { padding: 90px 0; content-visibility: auto; contain-intrinsic-size: auto 1700px; }
+@media (max-width: 899px) { .collection { contain-intrinsic-size: auto 3100px; } }
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (min-width: 900px) { .grid { grid-template-columns: repeat(4, 1fr); gap: 22px; } }
+.card { position: relative; perspective: 900px; contain: layout style; opacity: 0; transform: translate3d(0, 26px, 0); transition: opacity .7s ease, transform .7s var(--ease); transition-delay: var(--d, 0s); }
+.card.in { opacity: 1; transform: none; }
+.card-in { --rx: 0deg; --ry: 0deg; --lift: 0px; position: relative; display: flex; flex-direction: column; height: 100%; overflow: hidden; border: 1px solid rgba(255, 255, 255, .1); border-radius: 16px; text-align: center; padding-bottom: 16px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .015)); transform: rotateX(var(--rx)) rotateY(var(--ry)) translate3d(0, var(--lift), 0); transform-style: preserve-3d;
+  transition: transform .28s ease-out, border-color .35s ease; will-change: transform; }
+.card-in:hover { --lift: -6px; border-color: color-mix(in srgb, var(--tone) 55%, rgba(255, 255, 255, .25)); }
+.card-in:active { transform: scale(.97); }
+.card .glow { position: absolute; left: 50%; top: 36%; width: 96%; aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background-color: var(--tone); opacity: .3; transition: opacity .4s ease;
+  -webkit-mask-image: radial-gradient(closest-side, #000, transparent); mask-image: radial-gradient(closest-side, #000, transparent); }
+.card-in:hover .glow { opacity: .5; }
+.card .pic { position: relative; aspect-ratio: 1200 / 1607; overflow: hidden; }
+.card .ti { position: absolute; inset: 4% 4% 0; transform: perspective(800px) rotateX(calc(var(--prx, 0deg) + var(--px, 0deg))) rotateY(calc(var(--pry, 0deg) + var(--py, 0deg))) rotateZ(var(--prz, 0deg)); transition: transform .4s ease-out; will-change: transform; backface-visibility: hidden; }
+.card .ti img:not(.shd) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.card .shine { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.card .shine::after { content: ""; position: absolute; top: -20%; bottom: -20%; left: 0; width: 45%; opacity: 0; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .13), transparent); transform: translateX(-160%) skewX(-14deg); }
+.card-in:hover .shine::after { animation: sweep2 .9s ease-out; }
+@keyframes sweep2 { 0% { opacity: 1; transform: translateX(-160%) skewX(-14deg); } 100% { opacity: 1; transform: translateX(340%) skewX(-14deg); } }
+.card .heart { position: absolute; top: 4px; right: 4px; z-index: 3; color: rgba(236, 232, 223, .55); }
+.card .type { font-size: 10px; letter-spacing: .26em; text-transform: uppercase; color: var(--btn-2); margin-top: 2px; }
+.card h3 { font-size: 24px; font-weight: 500; line-height: 1.1; margin: 4px 8px 2px; }
+.card .d { font-size: 12px; color: var(--muted); padding: 0 12px; min-height: 3.6em; }
+.card .price { font: 500 13px var(--sans); font-variant: small-caps; letter-spacing: .18em; text-transform: lowercase; color: var(--ink); margin: 6px 0 12px; }
+.card .btn { margin: 0 12px; padding: 0 10px; font-size: 10.5px; position: relative; z-index: 2; }
+@media (prefers-reduced-motion: reduce) { .card { opacity: 1; transform: none; } .card-in { transition: none; } }

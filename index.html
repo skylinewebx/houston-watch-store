@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Meridian — Luxury Watches, Houston TX</title>
+  <meta name="description" content="Hand-picked luxury watches and a live watch configurator. Visit our Houston, Texas boutique.">
+  <link rel="icon" href="data:,">
+  <meta name="theme-color" content="#050b18" id="themeColor">
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/cormorant.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/cormorant-italic.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter.woff2" crossorigin>
+  <link rel="stylesheet" href="dist/app.css?v=53">
+  <!-- LCP: the first hero watch is static HTML and preloaded (AVIF, high priority) -->
+  <link rel="preload" as="image" type="image/avif" imagesrcset="assets/watches/dive-240.avif 240w, assets/watches/dive-480.avif 480w, assets/watches/dive-720.avif 720w, assets/watches/dive-960.avif 960w, assets/watches/dive-1200.avif 1200w, assets/watches/dive-1600.avif 1600w, assets/watches/dive-1792.avif 1792w" imagesizes="(min-width: 900px) 520px, 90vw" fetchpriority="high">
+  <script defer src="assets/watches/meta.js?v=53"></script>
+  <script defer src="assets/config.js?v=53"></script>
+  <script defer src="dist/app.js?v=53"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="amb" aria-hidden="true"><i class="amb-a"></i><i class="amb-b"></i></div>
+
+<!-- ============ HEADER ============ -->
+<header class="hdr" id="top">
+  <a class="logo" href="#home" aria-label="Meridian home">
+    <svg class="mark" viewBox="0 0 26 26" aria-hidden="true"><circle cx="13" cy="13" r="11.5"/><path d="M13 5.5V13l5 3"/></svg><span data-brand>Meridian</span>
+  </a>
+  <nav class="nav" id="nav" aria-label="Main">
+    <a href="#home">Home</a><a href="#collection">Collection</a><a href="#/customize" id="navCust">Customize</a><a href="#reviews">Reviews</a><a href="#store">Store</a>
+  </nav>
+  <div class="hdr-actions">
+    <button class="icon-btn" id="searchBtn" aria-label="Search watches" aria-expanded="false" aria-controls="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>
+    <button class="icon-btn" data-open="wishlist" aria-label="Wishlist"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><b class="badge" id="wishCount" hidden>0</b></button>
+    <button class="icon-btn" data-open="cart" aria-label="Cart"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8zM9 8V6a3 3 0 0 1 6 0v2"/></svg><b class="badge" id="cartCount" hidden>0</b></button>
+    <button class="icon-btn burger" id="burger" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/></svg></button>
+  </div>
+</header>
+
+<main id="main">
+<!-- ============ 1. HERO + SHOWCASE (5 watches) ============ -->
+<section class="hero" id="home" aria-label="Featured watches">
+  <div class="hero-copy">
+    <p class="eyebrow">Houston, Texas</p>
+    <h1 id="heroTitle">Time, <em>considered.</em></h1>
+    <p class="tagline" id="heroSub">Hand-picked luxury watches, customised your way. Houston, Texas.</p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#collection">Shop Collection</a>
+      <a class="btn btn-outline" href="#/customize" id="heroCust">Customize</a>
+    </div>
+  </div>
+  <div class="hero-stage">
+    <div class="halo" aria-hidden="true"></div>
+    <button class="arrow prev" id="scPrev" aria-label="Previous watch"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <div class="stage fadey" id="scStage"><div class="pic"><div class="float"><div class="wimg"><div class="tilt" style="transform:perspective(1100px) rotateX(7deg) rotateY(11deg) rotateZ(-9deg)"><div class="w on"><img class="shd" src="assets/watches/dive-shadow.webp" width="400" height="536" alt="" decoding="async"><picture><source type="image/avif" srcset="assets/watches/dive-240.avif 240w, assets/watches/dive-480.avif 480w, assets/watches/dive-720.avif 720w, assets/watches/dive-960.avif 960w, assets/watches/dive-1200.avif 1200w, assets/watches/dive-1600.avif 1600w, assets/watches/dive-1792.avif 1792w" sizes="(min-width: 900px) 520px, 90vw"><source type="image/webp" srcset="assets/watches/dive-240.webp 240w, assets/watches/dive-480.webp 480w, assets/watches/dive-720.webp 720w, assets/watches/dive-960.webp 960w, assets/watches/dive-1200.webp 1200w, assets/watches/dive-1600.webp 1600w, assets/watches/dive-1792.webp 1792w" sizes="(min-width: 900px) 520px, 90vw"><img src="assets/watches/dive-960.webp" width="1200" height="1607" alt="Opus Diver 300 watch" decoding="async" fetchpriority="high" style="background:url(data:image/webp;base64,UklGRmQBAABXRUJQVlA4WAoAAAAQAAAAEwAAGgAAQUxQSKcAAAABBji2rR173j+2badMmwnYqNyrt23bHoHdsUtpq09nPHin8CQiJkBw+3ARsVeayasikqxT/CUi/zq1oFanA3ToDIIRnWkwr+G1B+6ieMtf6CbL/wP7DOTkfZEFnHPqNZ4yeaPkxYJw/+K6EVbvjEsDIcfUY4qi86kKxQylIjiyj50oduQpeC/iyRxYUppjYFqnFwzrNIMunUrQqJOxKiKZOg7hIuJEAABWUDgglgAAABAEAJ0BKhQAGwA+tUqhS6ckIyGwGAgA4BaJZQDMWYuGQq1EUfrYq6LAAJ45vmLvS08F9lseRPfjIod2kM1QAbjqCTreZQsaIYpxxoFYbH62XRVdPbcZE0YfS3T3hIn3Q5Dv8Xaf/8/Wjk9iJqVatU0ALjJR9aD4gE7hAXeT1xSarHOwBpOZIgX4uL0Tqeo3/n7rOyAAAA==) 0 0/100% 100% no-repeat" onload="this.style.background='none'"></picture></div><div class="sheen"></div></div></div></div></div><div class="cos"></div></div>
+    <div class="floor" aria-hidden="true"></div>
+    <button class="motion" id="motionBtn" hidden aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 16 0M7 12a5 5 0 0 1 10 0M12 12l3 6"/></svg><span>Tilt with motion</span></button>
+    <button class="arrow next" id="scNext" aria-label="Next watch"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+  <div class="hero-ui">
+    <div class="thumbs" id="scThumbs" role="tablist" aria-label="Choose watch"></div>
+    <div class="sc-info">
+      <p class="sc-count"><b id="scNum">01</b> / 05</p>
+      <h2 id="scName">Opus Diver 300</h2>
+      <p class="sc-meta"><b id="scPrice">$2,850</b><span id="scType">Dive</span></p>
+      <div class="btn-row">
+        <button class="btn btn-outline" id="scCustomize">Customize</button>
+        <button class="btn btn-primary" id="scAdd">Add to cart</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. ANATOMY (pinned, scroll opens it, hotspots explore it) ============ -->
+<section class="anatomy" id="anatomy" aria-label="Watch anatomy">
+  <div class="pin">
+    <p class="kicker">Anatomy of the Opus Diver 300</p>
+    <div class="xscene" id="xscene"></div>
+    <div class="xcard idle" id="xcard" aria-live="polite">Scroll to open the watch, then tap a part.</div>
+  </div>
+</section>
+
+<!-- ============ 3. COLLECTION ============ -->
+<section class="collection wrap" id="collection">
+  <p class="kicker">The Collection</p>
+  <h2 class="h2">Ten styles, <em>one standard</em></h2>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- ============ 4. REVIEWS ============ -->
+<section class="reviews wrap" id="reviews">
+  <p class="kicker">Reviews</p>
+  <h2 class="h2">Loved in <em>Houston</em></h2>
+  <div class="rev-top">
+    <div class="rev-score"><b id="revAvg"></b><div class="stars" id="revStars"></div><span class="muted" id="revCount"></span></div>
+    <div class="rev-bars" id="revBars"></div>
+  </div>
+  <div class="rev-ctrl"><button class="icon-btn" id="revPrev" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button><button class="icon-btn" id="revNext" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>
+  <div class="rev-track" id="revTrack" tabindex="0"></div>
+</section>
+
+<!-- ============ 5. LOCATION (boutique video = subtle ambient background) ============ -->
+<section class="store" id="store">
+  <div class="store-bg" aria-hidden="true">
+    <img id="storePoster" alt="" width="960" height="540" decoding="async">
+    <video id="storeVideo" muted loop playsinline preload="none"></video>
+  </div>
+  <div class="wrap store-in">
+    <p class="kicker">Visit us</p>
+    <h2 class="h2">Our Houston <em>boutique</em></h2>
+    <div class="store-grid">
+      <div class="map" role="img" aria-label="Stylised map of Houston with the store marked">
+        <svg viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
+          <rect width="600" height="400" fill="#0b0e14"/>
+          <g stroke="#161b25" stroke-width="10" fill="none"><path d="M0 120H600M0 260H600M140 0V400M330 0V400M470 0V400"/></g>
+          <g stroke="#1d2431" stroke-width="3" fill="none"><path d="M0 60H600M0 190H600M0 330H600M70 0V400M230 0V400M400 0V400M540 0V400"/></g>
+          <path d="M-10 300C120 250 200 330 320 280S520 230 620 270" stroke="#0f2233" stroke-width="22" fill="none"/>
+          <path d="M-20 40L620 360" stroke="#222a39" stroke-width="7" fill="none"/>
+          <g transform="translate(330 190)"><circle r="34" fill="#c8a96a" opacity=".12"/><circle r="16" fill="#c8a96a" opacity=".25"/><path d="M0-30c-11 0-19 8-19 19 0 14 19 31 19 31s19-17 19-31c0-11-8-19-19-19z" fill="#c8a96a"/><circle cy="-11" r="6" fill="#07080c"/></g>
+        </svg>
+      </div>
+      <div class="store-info">
+        <address id="stAddr"></address>
+        <p><a id="stPhone"></a></p>
+        <dl class="hours" id="stHours"></dl>
+        <a class="btn btn-primary" id="stDir" target="_blank" rel="noopener">Get Directions</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER + PAYMENTS ============ -->
+<footer class="ftr">
+  <div class="wrap ftr-grid">
+    <div><span class="logo"><span data-brand>Meridian</span></span><p class="muted">Luxury watches, customised online and delivered across Texas.</p></div>
+    <div><h3>Explore</h3><a href="#collection">Collection</a><a href="#/customize">Customize</a><a href="#reviews">Reviews</a><a href="#store">Store</a></div>
+    <div><h3>We accept</h3><ul class="pay-list" id="payFooter"></ul></div>
+    <div><h3>Follow</h3><div class="social">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram (opens in a new tab)"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17" cy="7" r=".6"/></svg></a>
+      <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook (opens in a new tab)"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg></a>
+      <a href="https://www.youtube.com/" target="_blank" rel="noopener" aria-label="YouTube (opens in a new tab)"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M10 9.5v5l4.5-2.5z"/></svg></a>
+    </div></div>
+  </div>
+  <p class="copy muted">© <span id="yr"></span> <span data-brand>Meridian</span> · Houston, Texas</p>
+</footer>
+
+<!-- ============ CUSTOMIZER (full page, route #/customize/<id>) ============ -->
+<div class="cview" id="cview" aria-hidden="true" role="dialog" aria-label="Customize your watch">
+  <div class="cv-glow" aria-hidden="true"></div>
+  <header class="cv-bar">
+    <button class="btn btn-ghost no-arrow" id="cvBack">Collection</button>
+    <span class="cv-title">Customize</span>
+    <button class="icon-btn" data-open="cart" aria-label="Cart"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8zM9 8V6a3 3 0 0 1 6 0v2"/></svg><b class="badge" id="cartCount2" hidden>0</b></button>
+  </header>
+  <div class="cv-main">
+    <div class="cv-preview">
+      <div class="cv-stage" id="cvStage">
+        <div class="cv-inner" id="cvInner">
+          <img class="shd" id="cvShadow" alt="" width="400" height="536" decoding="async">
+          <img class="cv-photo" id="cvPhoto" alt="" width="1200" height="1607" decoding="async">
+          <div class="cv-strap" id="cvStrap"></div>
+          <canvas class="cv-canvas" id="cvCanvas" role="img" aria-label="Watch preview"></canvas>
+        </div>
+      </div>
+      <p class="cv-tag" id="cvTag"></p>
+    </div>
+    <div class="cv-panel">
+      <span class="cv-handle" aria-hidden="true"></span>
+      <div class="cv-ident">
+        <p class="type" id="cvType"></p>
+        <h1 id="cvName"></h1>
+        <p id="cvDesc"></p>
+        <p class="base">Base price <b id="cvBase"></b></p>
+      </div>
+      <section class="step"><h3><span class="n">01</span>Dial<em id="dialLbl"></em></h3><div class="sws" id="dialSw"></div></section>
+      <section class="step"><h3><span class="n">02</span>Bezel &amp; case<em id="frameLbl"></em></h3><div class="sws" id="frameSw"></div></section>
+      <section class="step"><h3><span class="n">03</span>Strap<em id="strapLbl"></em></h3><div class="seg" id="strapTypes"></div><div class="sws" id="strapSw"></div></section>
+      <dl class="bd" id="cvBd"></dl>
+      <div class="cv-actions">
+        <button class="btn btn-primary btn-block" id="cvAdd">Add to cart</button>
+        <div class="row"><button class="btn btn-outline no-arrow" id="cvReset">Reset</button><button class="btn btn-outline no-arrow" id="cvBack2">Back to collection</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- drawers: cart / wishlist -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-label="Panel">
+  <div class="drawer-head"><h3 id="drawerTitle"></h3><button class="icon-btn" id="drawerClose" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot" id="drawerFoot"></div>
+</aside>
+<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search watches">
+  <div class="search-box">
+    <div class="search-top"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      <input id="searchInput" type="search" placeholder="Search watches — diver, GMT, gold…" autocomplete="off" role="combobox" aria-expanded="true" aria-controls="searchList">
+      <button class="icon-btn" data-sclose aria-label="Close search"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <ul id="searchList" role="listbox"></ul>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+</body>
+</html>

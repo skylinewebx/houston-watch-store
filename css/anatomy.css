@@ -1,0 +1,49 @@
+/* ---------- ANATOMY: interactive exploded view (scroll opens it, hotspots explore it) ---------- */
+.anatomy { height: 460vh; position: relative; }
+.pin { position: sticky; top: 0; height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+.pin .kicker { position: absolute; top: calc(var(--hdr) + 12px); left: 0; right: 0; text-align: center; margin: 0; }
+.xscene { --hb: clamp(270px, 43svh, 380px); position: relative; width: min(1120px, 100%); height: 57svh; perspective: 1500px; perspective-origin: 50% 42%; }
+.xrig { position: absolute; inset: 0; transform-style: preserve-3d; transform: rotateX(9deg) rotateY(-13deg); }
+.xbox { position: absolute; left: 50%; top: 50%; height: var(--hb); aspect-ratio: 1000 / 1339; margin: calc(var(--hb) * -.5) 0 0 calc(var(--hb) * -.3734); transform-style: preserve-3d; }
+.xdrop { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform, opacity; }
+.part { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; transition: opacity .35s ease; }
+.lift { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .4s var(--ease); }
+.part img { position: absolute; inset: 0; width: 100%; height: 100%; transition: filter .35s ease; }
+/* soft contact shadow under each part, lying in the part's own plane */
+.part::before { content: ""; position: absolute; left: calc((var(--bx0) + var(--bw) * .06) * 100%); width: calc(var(--bw) * .88 * 100%); top: calc((var(--by1) + .012) * 100%); height: 3.4%;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, .55), transparent); opacity: 0; transition: opacity .5s ease; }
+.xrig.open .part::before { opacity: 1; }
+.xrig.has .part { opacity: .35; } .xrig.has .part.on { opacity: 1; }
+.part.on .lift { transform: translateZ(70px) scale(1.04); }
+.part.on img { filter: brightness(1.14) drop-shadow(0 0 14px rgba(224, 200, 143, .55)); }
+
+.xrig, .xbox, .xdrop, .part, .lift, .part img, .ghost { pointer-events: none; }   /* only the flat hotspot overlay takes the pointer */
+.ghost { position: absolute; visibility: hidden; }
+.hots { position: absolute; inset: 0; z-index: 4; }
+.hot { position: absolute; border-radius: 14px; pointer-events: none; }
+.xscene.open .hot { pointer-events: auto; cursor: pointer; }
+.hot::before, .hot::after { content: ""; position: absolute; left: 50%; top: 50%; border-radius: 50%; opacity: 0; transition: opacity .4s ease; }
+.hot::after { width: 9px; height: 9px; margin: -4.5px; background: var(--btn-2); box-shadow: 0 0 10px var(--btn-2); }
+.hot::before { width: 30px; height: 30px; margin: -15px; border: 1px solid var(--btn-2); }
+.xscene.open:not(.touched) .hot::after { opacity: 1; }
+.xscene.open:not(.touched) .hot::before { opacity: 1; animation: ping 2.2s ease-out infinite; }
+@keyframes ping { 0% { transform: scale(.4); opacity: .9; } 100% { transform: scale(1.7); opacity: 0; } }
+
+.xline { position: absolute; left: 0; top: 0; height: 1px; background: linear-gradient(90deg, rgba(224, 200, 143, .9), rgba(224, 200, 143, .35)); transform-origin: 0 50%; opacity: 0; transition: opacity .3s ease, transform .35s var(--ease); pointer-events: none; }
+.xlabel { position: absolute; left: 0; top: 0; width: 250px; padding: 14px 16px; border: 1px solid rgba(255, 255, 255, .12); border-radius: 10px; background: rgba(9, 11, 17, .66); opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+.xlabel.on, .xline.on { opacity: 1; }
+.xlabel b, .xcard b { display: block; font: 400 10px var(--sans); letter-spacing: .26em; text-transform: uppercase; color: var(--btn-2); margin-bottom: 6px; }
+.xlabel strong, .xcard strong { display: block; font: 500 21px/1.15 var(--serif); }
+.xlabel span, .xcard span { display: block; margin-top: 4px; font-size: 12.5px; line-height: 1.45; color: rgba(236, 232, 223, .72); }
+.xlabel em, .xcard em { display: block; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); font-style: normal; font-size: 11.5px; color: var(--muted); }
+.xhint { position: absolute; bottom: 4%; left: 0; right: 0; text-align: center; font-size: 10.5px; letter-spacing: .26em; text-transform: uppercase; color: rgba(236, 232, 223, .5); opacity: 0; transition: opacity .5s ease; pointer-events: none; }
+.xrig.open ~ .xhint { opacity: 1; } .xrig.touched ~ .xhint { opacity: 0; }
+
+.xcard { display: none; }
+@media (max-width: 899px) {
+  .xlabel, .xline { display: none; }
+  .xcard { display: block; width: min(92vw, 420px); min-height: 124px; margin-top: 8px; padding: 14px 16px; border: 1px solid rgba(255, 255, 255, .12); border-radius: 12px; background: rgba(9, 11, 17, .6); }
+  .xcard.idle { color: var(--muted); font-size: 12.5px; display: grid; place-items: center; text-align: center; }
+}
+@media (min-width: 900px) { .xscene { --hb: min(60svh, 560px); height: min(74svh, 700px); } }
+@media (prefers-reduced-motion: reduce) { .anatomy { height: auto; padding: 90px 0 40px; } .pin { position: static; height: auto; } .xscene { height: 70svh; } }

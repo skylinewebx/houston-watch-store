@@ -1,0 +1,78 @@
+/* ---------- CUSTOMIZER: a dedicated full-page configurator per watch (route #/customize/<id>) ---------- */
+.cview { --cglow: #1d4fa8; position: fixed; inset: 0; z-index: 80; background: var(--bg-1); overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; visibility: hidden; opacity: 0; }
+.cview.open { visibility: visible; opacity: 1; }
+.cview.fading { transition: opacity .32s ease, visibility .32s; }
+.cv-glow { position: fixed; left: 28%; top: 42%; width: 95vmax; height: 95vmax; margin: -47vmax 0 0 -47vmax; background-color: var(--cglow); opacity: .34; pointer-events: none; transition: background-color .6s ease;
+  -webkit-mask-image: radial-gradient(closest-side, #000, transparent); mask-image: radial-gradient(closest-side, #000, transparent); }
+.cv-bar { position: sticky; top: 0; z-index: 6; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 6px; background: rgba(6, 9, 14, .6); border-bottom: 1px solid var(--line); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+.cv-bar .btn { min-height: 44px; padding: 0 14px; font-size: 10.5px; }
+.cv-bar .btn::after { display: none; }
+.cv-bar .btn::before { content: "←"; font-size: 14px; letter-spacing: 0; }
+.cv-title { font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); }
+
+.cv-main { position: relative; z-index: 1; display: block; }
+.cv-preview { position: sticky; top: 56px; z-index: 3; height: 44svh; }
+.cv-stage { position: absolute; inset: 0; overflow: hidden; touch-action: pan-y; -webkit-mask-image: linear-gradient(transparent, #000 9%, #000 91%, transparent); mask-image: linear-gradient(transparent, #000 9%, #000 91%, transparent); }
+.cv-inner { position: absolute; left: 0; top: 0; transform-origin: 0 0; transition: opacity .2s ease; }
+.cv-inner > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cv-inner { will-change: transform; backface-visibility: hidden; }
+.cv-canvas { visibility: hidden; }
+.cv-strap svg { width: 100%; height: 100%; }
+
+.cv-tag { position: absolute; left: 14px; bottom: 10px; z-index: 4; font-size: 10px; letter-spacing: .26em; text-transform: uppercase; color: rgba(236, 232, 223, .55); }
+
+.cv-panel { position: relative; z-index: 4; margin-top: -18px; padding: 8px 20px 64px; border-radius: 24px 24px 0 0; background: rgba(9, 12, 19, .9); border-top: 1px solid rgba(255, 255, 255, .1); }
+.cv-handle { display: block; width: 40px; height: 4px; margin: 6px auto 18px; border-radius: 2px; background: rgba(255, 255, 255, .22); }
+.cv-ident .type { font-size: 10.5px; letter-spacing: .28em; text-transform: uppercase; color: var(--btn-2); }
+.cv-ident h1 { font-size: clamp(34px, 8vw, 52px); font-weight: 400; line-height: 1.04; margin: 4px 0 6px; }
+.cv-ident p { color: rgba(236, 232, 223, .62); font-size: 14px; max-width: 46ch; }
+.cv-ident .base { margin-top: 12px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.cv-ident .base b { font: 500 20px var(--serif); letter-spacing: .02em; color: var(--ink); margin-left: 8px; text-transform: none; }
+
+.step { margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--line); }
+.step h3 { display: flex; align-items: baseline; gap: 12px; font: 400 11px var(--sans); letter-spacing: .26em; text-transform: uppercase; margin-bottom: 8px; }
+.step h3 .n { color: var(--btn-2); font-family: var(--serif); font-size: 15px; letter-spacing: .04em; }
+.step h3 em { margin-left: auto; flex: 0 1 58%; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font: italic 400 17px var(--serif); letter-spacing: 0; text-transform: none; color: var(--btn-2); }
+.sws { display: flex; flex-wrap: wrap; gap: 6px; margin-left: -4px; min-height: 52px; }   /* reserved: the breakdown below must not jump when a strap type has no swatches */
+.sw { width: 48px; height: 48px; display: grid; place-items: center; }
+.sw i { width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .22); transition: transform .25s var(--ease), box-shadow .25s ease; }
+.sw:hover i { transform: scale(1.1); }
+.sw[aria-pressed="true"] i { transform: scale(1.08); box-shadow: 0 0 0 3px var(--bg-1), 0 0 0 4.5px var(--btn); }
+.sw i.orig { background: conic-gradient(from 30deg, #8a8f98, #e8eaee, #8a8f98, #3a3d44, #8a8f98); }
+.seg { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 10px; scrollbar-width: none; } .seg::-webkit-scrollbar { display: none; }
+.chip { flex: none; min-height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; font-size: 12px; transition: border-color .25s, color .25s, background-color .25s; }
+.chip:hover { border-color: rgba(255, 255, 255, .3); }
+.chip[aria-pressed="true"] { border-color: var(--btn); color: #0b0b0c; background: var(--btn); }
+
+.bd { margin: 28px 0 0; padding: 16px 0 0; border-top: 1px solid var(--line); display: grid; gap: 2px; }
+.bd div { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; padding: 4px 0; color: rgba(236, 232, 223, .7); }
+.bd dt, .bd dd { margin: 0; } .bd dd { font-variant-numeric: tabular-nums; } .bd small { color: var(--muted); margin-left: 8px; }
+.bd .tot { margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--ink); } .bd .tot dt { font-size: 11px; letter-spacing: .24em; text-transform: uppercase; }
+.bd .tot dd { font: 500 34px var(--serif); color: var(--btn-2); }
+.cv-actions { display: grid; gap: 10px; margin-top: 20px; }
+.cv-actions .row { display: flex; gap: 10px; } .cv-actions .row .btn { flex: 1; }
+
+/* entrance styles (class set per card, all < 500ms) */
+.cview.open .cv-panel { animation-duration: .42s; animation-timing-function: var(--ease); animation-fill-mode: both; }
+.cview.v-left.open .cv-panel { animation-name: inL; } .cview.v-right.open .cv-panel { animation-name: inR; }
+.cview.v-up.open .cv-panel { animation-name: inU; } .cview.v-scale.open .cv-panel { animation-name: inS; }
+.cview.v-down.open .cv-panel { animation-name: inD; }
+@keyframes inL { from { opacity: 0; transform: translate3d(-5%, 0, 0); } }
+@keyframes inR { from { opacity: 0; transform: translate3d(5%, 0, 0); } }
+@keyframes inU { from { opacity: 0; transform: translate3d(0, 6%, 0); } }
+@keyframes inD { from { opacity: 0; transform: translate3d(0, -4%, 0); } }
+@keyframes inS { from { opacity: 0; transform: scale(.95); } }
+.flyer { position: fixed; z-index: 95; pointer-events: none; transform-origin: 50% 50%; will-change: transform; }
+
+@media (min-width: 900px) {
+  .cv-bar { padding: 0 24px 0 16px; }
+  .cv-main { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(400px, .82fr); }
+  .cv-preview { height: calc(100svh - 56px); }
+  .cv-panel { margin: 0; border-radius: 0; border-top: 0; border-left: 1px solid rgba(255, 255, 255, .1); min-height: calc(100svh - 56px); padding: 40px 44px 80px; }
+  .cv-handle { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .cview.open .cv-panel { animation: none; } }
+
+/* a closed customizer must be inert: children with their own visibility (canvas/photo) would otherwise still catch clicks and paint */
+.cview:not(.open), .cview:not(.open) * { visibility: hidden !important; pointer-events: none !important; }
+.cview:not(.open) { content-visibility: hidden; }   /* closed = no style/layout/paint cost at all */
